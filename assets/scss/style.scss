@@ -1,5 +1,7 @@
 @import './colors';
 @import './animation/old-tv';
+@import './animation/rain';
+@import './animation/changeToCalaverita';
 
 * {
     margin: 0;
@@ -9,10 +11,15 @@
 
 body {
     height: 100vh;
+    background: mix($dark-brown, $white);
     overflow: auto;
 }
 
-.set {
+body:has(.appear), .appear {
+    animation: body-appear-media 1s ease-in forwards;
+}
+
+.set, .desappear {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,12 +27,36 @@ body {
     height: 100%;
 }
 
+.desappear {
+    animation: desappear-set 750ms ease-in forwards;
+}
+
 .tv {
-    width: 8rem;
-    min-height: 6rem;
+    --width-tv: 16rem;
+    --height-tv: 12rem;
+    position: relative;
+    width: var(--width-tv);
+    min-height: var(--height-tv);
+    background: $white;
     border-radius: 0.5rem;
+    border: 0.5rem $dark solid;
     animation: big-tv 1s ease-in forwards;
-    border: 0.25rem $dark solid;
+}
+
+.tv .antenna, .tv .antenna:last-child {
+    position: absolute;
+    width: calc(var(--width-tv) / 16);
+    height: calc(var(--height-tv));
+    background: $dark;
+    border-radius: 1rem 1rem 0rem 0rem;
+    top: -50%;
+    left: 50%;
+    z-index: -1;
+    transform: translate(-50%, 0%) rotate(-25deg);
+}
+
+.tv .antenna:last-child {
+    transform: rotate(25deg);
 }
 
 .tv .screen {
@@ -36,7 +67,8 @@ body {
     place-items: center;
     text-align: center;
     cursor: pointer;
-    animation: textShadow 1.6s infinite;
+    z-index: 5;
+    animation: tv-on 5s ease-out forwards, textShadow 1.6s infinite;
 }
 
 .screen::after {
@@ -49,19 +81,49 @@ body {
     right: 0;
     background: rgba(18, 16, 16, 0.1);
     opacity: 0;
-    z-index: 2;
+    z-index: 6;
     pointer-events: none;
     animation: flicker 0.15s infinite;
 }
 
 .media {
     display: none;
+}
+
+.media, .appear {
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.media img {
+.media img, .appear img {
     width: 100%;
     object-fit: cover;
+}
+
+.rain-container {
+    position: absolute;
+    top: -$cempasuchil-size;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -10;
+}
+
+.rain-drop {
+    position: absolute;
+    width: $cempasuchil-size;
+    height: $cempasuchil-size;
+    background-repeat: no-repeat;
+    background-size: $cempasuchil-size $cempasuchil-size;
+    transform-origin: top center;
+}
+
+.rain-drop.left {
+    animation: rotate-left-drop calc($rain-duration-animation / 2) linear infinite, rain $rain-duration-animation linear infinite;
+}
+
+.rain-drop.right {
+    animation: rotate-right-drop calc($rain-duration-animation / 2) linear infinite, rain $rain-duration-animation linear infinite;
 }

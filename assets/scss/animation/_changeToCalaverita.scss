@@ -1,0 +1,28 @@
+@keyframes desappear-set {
+    0% {
+        scale: 1;
+    } 90% {
+        scale: 3;
+    } 100% {
+        display: none;
+    }
+}
+
+@keyframes appear-media {
+    0% {
+        display: none;
+    }
+    100% {
+        display: flex;
+    }
+}
+
+@keyframes body-appear-media {
+    0% {}
+    100% {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
